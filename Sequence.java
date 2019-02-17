@@ -1,27 +1,26 @@
-import java.sql.SQLClientInfoException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-//queue
+
 public class Sequence {
 
 
-    public List <String> toList(String text) {
-        return IntStream.range(0, text.length())
-                .mapToObj(e -> text.substring(e, text.length()))
+    public List <String> toListOfSuffixes(String word) {
+        return IntStream.range(0, word.length())
+                .mapToObj(e -> word.substring(e, word.length()))
                 .collect(Collectors.toList());
 
     }
 
-    public Optional <Integer> getTheSquence(List <String> words, String word) {
+    public Optional <Integer> accumlateSimilarities(List <String> words, String word) {
         return words.stream()
-                .map(e -> countDifferences(e, word))
+                .map(e -> countSimilarities(e, word))
                 .reduce((a, b) -> a + b);
 
     }
 
-    private Stack <String> toLetters(String word) {
+    private Stack <String> lettersToStack(String word) {
         Stack <String> letters = new Stack <>();
         Stream.of(word.split(""))
                 .forEach(letters::push);
@@ -30,21 +29,18 @@ public class Sequence {
     }
 
 
-    public int countDifferences(String word1, String word2) {
-        Stack <String> letters1 = toLetters(word1);
-        Stack <String> letters2 = toLetters(word2);
+    public int countSimilarities(String word1, String word2) {
+        Stack <String> letters1 = lettersToStack(word1);
+        Stack <String> letters2 = lettersToStack(word2);
         int similarities = 0;
         int failures = 0;
-
-
-        while (areThereMore(letters1, letters2)) {
+        while (isNotEmpty(letters1, letters2)) {
             if (compareFirstLetters(letters1, letters2) == 0) {
                 failures += 1;
             } else {
                 similarities += 1;
             }
         }
-
         if (failures > 1) {
             return 0;
         }
@@ -52,7 +48,7 @@ public class Sequence {
     }
 
 
-    private boolean areThereMore(Stack <String> letters1, Stack <String> letters2) {
+    private boolean isNotEmpty(Stack <String> letters1, Stack <String> letters2) {
         return !letters1.isEmpty() && !letters2.isEmpty();
     }
 
@@ -64,18 +60,7 @@ public class Sequence {
         }
         return 1;
     }
-    public List<Integer> differences(String word1, String word2) {
-        Stack <String> letters1 = toLetters(word1);
-        Stack <String> letters2 = toLetters(word2);
-        int similarities = 0;
-        int failures = 0;
-        List<Integer> numbers=new ArrayList <>();
-        IntStream.range(0,word2.length())
-                .takeWhile(e -> areThereMore(letters1, letters2))
-                .forEach(e -> numbers.add(compareFirstLetters(letters1, letters2)));
 
-        return numbers;
-    }
-   
+
 }
 
