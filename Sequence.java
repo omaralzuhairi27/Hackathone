@@ -1,7 +1,5 @@
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Stack;
+import java.sql.SQLClientInfoException;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -37,6 +35,8 @@ public class Sequence {
         Stack <String> letters2 = toLetters(word2);
         int similarities = 0;
         int failures = 0;
+
+
         while (areThereMore(letters1, letters2)) {
             if (compareFirstLetters(letters1, letters2) == 0) {
                 failures += 1;
@@ -64,6 +64,18 @@ public class Sequence {
         }
         return 1;
     }
+    public List<Integer> differences(String word1, String word2) {
+        Stack <String> letters1 = toLetters(word1);
+        Stack <String> letters2 = toLetters(word2);
+        int similarities = 0;
+        int failures = 0;
+        List<Integer> numbers=new ArrayList <>();
+        IntStream.range(0,word2.length())
+                .takeWhile(e -> areThereMore(letters1, letters2))
+                .forEach(e -> numbers.add(compareFirstLetters(letters1, letters2)));
 
+        return numbers;
+    }
+   
 }
 
