@@ -14,9 +14,9 @@ class SequenceTest {
     @CsvSource({
             "ababaa, 11",
     })
-    void testWithCsvSource(String word, Integer expectedNumber) {
-        List <String> words = sequence.toList(text);
-        Optional <Integer> actualNumber = sequence.getTheSquence(words, word);
+    void testaccumlateSimilarities(String word, Integer expectedNumber) {
+        List <String> words = sequence.toListOfSuffixes(text);
+        Optional <Integer> actualNumber = sequence.accumlateSimilarities(words, word);
         Assertions.assertEquals(expectedNumber, actualNumber.get());
     }
 
@@ -30,8 +30,8 @@ class SequenceTest {
             "a, 1",
 
     })
-    void testCountDifferences(String word, Integer expectedNumber) {
-        int actualNumber = sequence.countDifferences(word, text);
+    void testCountSimilarities(String word, Integer expectedNumber) {
+        int actualNumber = sequence.countSimilarities(word, text);
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 }
